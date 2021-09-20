@@ -1,0 +1,18 @@
+﻿@model IgnitisTask.Dtos.UnitOfWork
+<h2>Add an answer</h2>
+
+@using (Html.BeginForm("Create", "Answer", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(c => c.Question, "Options of selection")
+        @Html.DropDownListFor(m => m.Answer.QuestionId, new SelectList(Model.Questions, "Id", "Text"), "", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(c => c.Answer, "Text")
+        @Html.TextBoxFor(c => c.Answer.Text, new { @class = "form-control" })
+    </div>
+
+    @Html.HiddenFor(c => c.Answer.Id)
+    <button type="submit" class="btn btn-primary">Add</button>
+    @Html.ActionLink("Cancel", "Index", "Value", null, new { @class = "btn btn-secondary" })
+}

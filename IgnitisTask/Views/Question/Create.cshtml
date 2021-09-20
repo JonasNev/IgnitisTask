@@ -1,0 +1,14 @@
+﻿@model QuestionModel
+
+<h2>Add a question</h2>
+
+@using (Html.BeginForm("Create", "Question", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(c => c.Text, "Name of selection parameter:")
+        @Html.TextBoxFor(c => c.Text, new { @class = "form-control" })
+    </div>
+    @Html.HiddenFor(c => c.Id)
+    <button type="submit" class="btn btn-primary">Add</button>
+    @Html.ActionLink("Cancel", "Index", "Option", null, new { @class = "btn btn-secondary" })
+}
