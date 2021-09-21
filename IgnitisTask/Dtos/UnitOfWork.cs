@@ -12,6 +12,8 @@ namespace IgnitisTask.Dtos
         public List<QuestionModel> Questions { get; set; }
         public List<AnswerModel> Answers { get; set; } = new List<AnswerModel>();
         public List<Junction> Junctions { get; set; }
+        public List<Junction> SavedJunctions { get; set; }
+        public List<int> SelectedAnswerIds { get; set; }
         public QuestionModel Question { get; set; }
         public AnswerModel Answer { get; set; }
         public int FormId { get; set; }

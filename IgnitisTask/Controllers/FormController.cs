@@ -30,14 +30,20 @@ namespace IgnitisTask.Controllers
             {
                 Questions = _context.Questions.Include(x => x.Answers).ToList(),
                 Answers = _context.Answers.ToList(),
-                FormId = id
+                FormId = id,
+                SavedJunctions = _context.Junctions.Where(x => x.FormId == id).Include(x => x.Question).ThenInclude(x => x.Answers).ToList()
             };
             return View(model);
         }
         [HttpPost]
         public IActionResult SaveForm(UnitOfWork unitOfWork)
         {
-            _context.Answers.Add(unitOfWork.Answer);
+            for (int i = 0; i < unitOfWork.Junctions.Count; i++)
+            {
+                unitOfWork.Junctions[i].QuestionId = unitOfWork.Questions[i].Id;
+                unitOfWork.Junctions[i].FormId = unitOfWork.FormId;
+            }
+            _context.Junctions.AddRange(unitOfWork.Junctions);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }

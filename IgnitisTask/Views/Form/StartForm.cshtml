@@ -6,28 +6,61 @@
 
 
 
-@using (Html.BeginForm("SaveChanges", "Form", FormMethod.Post))
+@using (Html.BeginForm("SaveForm", "Form", FormMethod.Post, new { id = "form" }))
 {
-<table class="table table-bordered table-hover">
-    <thead>
-        <tr>
-            <th class="text-center">Question</th>
-            <th class="text-center">Answers</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var question in Model.Questions)
-        {
+    <table class="table table-bordered table-hover">
+        <thead>
             <tr>
-                <td class="text-center">@question.Text</td>
-                <td class="text-center">
-                    @Html.DropDownListFor(m => m.Answer, new SelectList(question.Answers, "Id", "Text"), "", new { @class = "form-control" })
-                </td>
+                <th class="text-center">Question</th>
+                <th class="text-center">Answers</th>
             </tr>
+        </thead>
+        @if (Model.SavedJunctions.Count != 0)
+        {
+            @for (int i = 0; i < Model.Questions.Count; i++)
+            {
+                <tr>
+                    <td class="text-center">@Model.Questions[i].Text</td>
+                    <td class="text-center">
+                        @Html.DropDownListFor(m => m.SavedJunctions[i].AnswerId, new SelectList(Model.Questions[i].Answers, "Id", "Text"), "", new { @class = "form-control" })
+                    </td>
+                    @Html.HiddenFor(m => m.Questions[i].Id)
+                    @Html.HiddenFor(c => c.FormId)
+                </tr>
+            }
         }
-    </tbody>
-</table>
+        else
+        {
+            <tbody>
+                @for (int i = 0; i < Model.Questions.Count; i++)
+                {
+                    <tr>
+                        <td class="text-center">@Model.Questions[i].Text</td>
+                        <td class="text-center">
+                            @Html.DropDownListFor(m => m.Junctions[i].AnswerId, new SelectList(Model.Questions[i].Answers, "Id", "Text"), "", new { @class = "form-control", disabled = "disabled" })
+                        </td>
+                        @Html.HiddenFor(m => m.Questions[i].Id)
+                        @Html.HiddenFor(c => c.FormId)
+                    </tr>
+                }
+            </tbody>
+        }
+
+    </table>
     @Html.HiddenFor(c => c.FormId)
     <button type="submit" class="btn btn-primary">Add</button>
-    @Html.ActionLink("Cancel", "Index", "Company", null, new { @class = "btn btn-secondary" })
+    @Html.ActionLink("Cancel", "Index", "Form", null, new { @class = "btn btn-secondary" })
+    <button id="edit" type="button">Koreguoti požymius</button>
+}
+
+@section scripts
+{
+    <script>
+        let form = document.getElementById('form');
+        editBtn.addEventListener('click', function () {
+            for (let element of initDisabledElements)
+                element.disabled = false;
+            editBtn.disabled = true;
+        });
+    </script>
 }

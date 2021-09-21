@@ -7,7 +7,7 @@
 <ul>
     @foreach (int formId in Model)
     {
-        <li>@Html.ActionLink($"Form nr. {formId}", "Form", new { id = formId })</li>
+        <li>@Html.ActionLink($"Form nr. {formId}", "StartForm", new { id = formId })</li>
     }
 </ul>
-@Html.ActionLink($"Pridėti naują formą", "StartForm", new { id = Model.Count})
+@Html.ActionLink($"Pridėti naują formą", "StartForm", new { id = Model.Count })

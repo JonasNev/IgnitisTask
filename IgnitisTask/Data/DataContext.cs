@@ -23,7 +23,7 @@ namespace IgnitisTask.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Junction>()
-                .HasKey(j => new { j.QuestionId, j.AnswerId });
+                .HasKey(j => new { j.QuestionId, j.AnswerId, j.FormId });
             modelBuilder.Entity<Junction>()
                 .HasOne(bc => bc.Question)
                 .WithMany(b => b.Junctions)
