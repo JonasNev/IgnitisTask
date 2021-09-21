@@ -13,6 +13,8 @@ namespace IgnitisTask.Data
         public DbSet<AnswerModel> Answers { get; set; }
         public DbSet<QuestionModel> Questions { get; set; }
         public DbSet<Junction> Junctions { get; set; }
+        public IEnumerable<object> SelectedValues { get; internal set; }
+
         public DataContext(DbContextOptions options) : base(options)
         {
 

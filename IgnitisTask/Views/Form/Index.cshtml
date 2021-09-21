@@ -1,0 +1,13 @@
+﻿@model List<int>
+@{
+    ViewData["Title"] = "Registration form list";
+}
+
+<h2>Registration form list</h2>
+<ul>
+    @foreach (int formId in Model)
+    {
+        <li>@Html.ActionLink($"Form nr. {formId}", "Form", new { id = formId })</li>
+    }
+</ul>
+@Html.ActionLink($"Pridėti naują formą", "StartForm", new { id = Model.Count})

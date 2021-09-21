@@ -4,6 +4,10 @@
 <p></p>
 @Html.ActionLink("Add an answer", "Create", "Answer", null, new { @class = "btn btn-primary float-right" })
 
+
+
+@using (Html.BeginForm("SaveChanges", "Form", FormMethod.Post))
+{
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
@@ -12,25 +16,18 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var answer in Model.Questions)
+        @foreach (var question in Model.Questions)
         {
             <tr>
-                <td class="text-center">@answer.Text</td>
+                <td class="text-center">@question.Text</td>
                 <td class="text-center">
-                    @Html.DropDownListFor(m => m.Junctions, new SelectList(answer.Answers, "Id", "Text"), "", new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.Answer, new SelectList(question.Answers, "Id", "Text"), "", new { @class = "form-control" })
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-@using (Html.BeginForm("StartForm", "Form", FormMethod.Post))
-{
-    <div class="form-group">
-        @Html.LabelFor(c => c.Apartment.City, "City")
-        @Html.TextBoxFor(c => c.Apartment.City, new { @class = "form-control" })
-    </div>
-    @Html.HiddenFor(c => c.Apartment.Company_id)
+    @Html.HiddenFor(c => c.FormId)
     <button type="submit" class="btn btn-primary">Add</button>
     @Html.ActionLink("Cancel", "Index", "Company", null, new { @class = "btn btn-secondary" })
 }

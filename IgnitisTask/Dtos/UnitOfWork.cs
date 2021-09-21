@@ -14,5 +14,6 @@ namespace IgnitisTask.Dtos
         public List<Junction> Junctions { get; set; }
         public QuestionModel Question { get; set; }
         public AnswerModel Answer { get; set; }
+        public int FormId { get; set; }
     }
 }

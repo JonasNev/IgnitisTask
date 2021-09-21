@@ -20,15 +20,17 @@ namespace IgnitisTask.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            List<int> formIds = _context.Junctions.Select(v => v.FormId).Distinct().ToList();
+            return View(formIds);
         }
 
-        public IActionResult StartForm()
+        public IActionResult StartForm(int id)
         {
             UnitOfWork model = new()
             {
                 Questions = _context.Questions.Include(x => x.Answers).ToList(),
-                Answers = _context.Answers.ToList()
+                Answers = _context.Answers.ToList(),
+                FormId = id
             };
             return View(model);
         }
