@@ -1,11 +1,4 @@
 ﻿@model IgnitisTask.Dtos.UnitOfWork
-
-@Html.ActionLink("Add an question", "Create", "Question", null, new { @class = "btn btn-primary float-right" })
-<p></p>
-@Html.ActionLink("Add an answer", "Create", "Answer", null, new { @class = "btn btn-primary float-right" })
-
-
-
 @using (Html.BeginForm("SaveForm", "Form", FormMethod.Post, new { id = "form" }))
 {
     <table class="table table-bordered table-hover">
@@ -36,8 +29,8 @@
                 {
                     <tr>
                         <td class="text-center">@Model.Questions[i].Text</td>
-                        <td class="text-center">
-                            @Html.DropDownListFor(m => m.Junctions[i].AnswerId, new SelectList(Model.Questions[i].Answers, "Id", "Text"), "", new { @class = "form-control", disabled = "disabled" })
+                        <td class="text-center" value="Model.Junctions[i].AnswerId">
+                            @Html.DropDownListFor(m => m.Junctions[i].AnswerId, new SelectList(Model.Questions[i].Answers, "Id", "Text"), "", new { @class = "form-control disabled", disabled = true })
                         </td>
                         @Html.HiddenFor(m => m.Questions[i].Id)
                         @Html.HiddenFor(c => c.FormId)
@@ -48,19 +41,28 @@
 
     </table>
     @Html.HiddenFor(c => c.FormId)
-    <button type="submit" class="btn btn-primary">Add</button>
+    <button type="submit" id="submit" value="Submit" class="btn btn-danger" disabled="disabled">Add</button>
     @Html.ActionLink("Cancel", "Index", "Form", null, new { @class = "btn btn-secondary" })
-    <button id="edit" type="button">Koreguoti požymius</button>
+    <button class="btn btn-primary" id="edit" type="button">Make changes</button>
 }
 
 @section scripts
 {
     <script>
-        let form = document.getElementById('form');
+        let initDisabledElements = document.getElementsByClassName('disabled');
+        let editBtn = document.getElementById('edit');
         editBtn.addEventListener('click', function () {
             for (let element of initDisabledElements)
                 element.disabled = false;
             editBtn.disabled = true;
         });
+
+        $(document).ready(function () {
+            $("input").blur(function () {
+                if ($(this).val() !== "" && $(this).val() !== null) {
+                    $("#submit").removeAttr("disabled");
+                }
+            });
+        })
     </script>
 }

@@ -1,4 +1,5 @@
 using IgnitisTask.Data;
+using IgnitisTask.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +28,7 @@ namespace IgnitisTask
         {
             var connectionString = Configuration.GetConnectionString("Default");
             services.AddDbContext<DataContext>(d => d.UseSqlServer(connectionString));
+            services.AddScoped<FormService>();
             services.AddControllersWithViews();
         }
 

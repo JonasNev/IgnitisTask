@@ -1,5 +1,6 @@
 ﻿using IgnitisTask.Data;
 using IgnitisTask.Dtos;
+using IgnitisTask.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,10 +13,12 @@ namespace IgnitisTask.Controllers
     public class FormController : Controller
     {
         private readonly DataContext _context;
+        private readonly FormService _formService;
 
-        public FormController(DataContext context)
+        public FormController(DataContext context, FormService formService)
         {
             _context = context;
+            _formService = formService;
         }
 
         public IActionResult Index()
@@ -26,25 +29,13 @@ namespace IgnitisTask.Controllers
 
         public IActionResult StartForm(int id)
         {
-            UnitOfWork model = new()
-            {
-                Questions = _context.Questions.Include(x => x.Answers).ToList(),
-                Answers = _context.Answers.ToList(),
-                FormId = id,
-                SavedJunctions = _context.Junctions.Where(x => x.FormId == id).Include(x => x.Question).ThenInclude(x => x.Answers).ToList()
-            };
+            UnitOfWork model = _formService.GetEssentials(id);
             return View(model);
         }
         [HttpPost]
         public IActionResult SaveForm(UnitOfWork unitOfWork)
         {
-            for (int i = 0; i < unitOfWork.Junctions.Count; i++)
-            {
-                unitOfWork.Junctions[i].QuestionId = unitOfWork.Questions[i].Id;
-                unitOfWork.Junctions[i].FormId = unitOfWork.FormId;
-            }
-            _context.Junctions.AddRange(unitOfWork.Junctions);
-            _context.SaveChanges();
+            _formService.SaveForm(unitOfWork);
             return RedirectToAction("Index");
         }
     }
