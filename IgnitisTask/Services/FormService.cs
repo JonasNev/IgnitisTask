@@ -34,10 +34,13 @@ namespace IgnitisTask.Services
         {
             for (int i = 0; i < unitOfWork.Junctions.Count; i++)
             {
-                unitOfWork.Junctions[i].QuestionId = unitOfWork.Questions[i].Id;
-                unitOfWork.Junctions[i].FormId = unitOfWork.FormId;
+                if (unitOfWork.Junctions[i].AnswerId != 0)
+                {
+                    unitOfWork.Junctions[i].QuestionId = unitOfWork.Questions[i].Id;
+                    unitOfWork.Junctions[i].FormId = unitOfWork.FormId;
+                    _context.Junctions.Add(unitOfWork.Junctions[i]);
+                }
             }
-            _context.Junctions.AddRange(unitOfWork.Junctions);
             _context.SaveChanges();
         }
     }
